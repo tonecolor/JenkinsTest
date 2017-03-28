@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 
-String APK_NAME = "JenkinsTest" // 기본으로 사용되는 APK 파일명
+String APK_NAME = "jenkinsTest" // 기본으로 사용되는 APK 파일명
 
 // 데이트타임 스트링을 리턴하는 메소드. 20150120_153025999 형식.
 def getDate() {
@@ -25,10 +25,9 @@ android {
     // 키스토어의 비밀번호가 Git에 공개되기 때문에 권한 확인이 꼭 필요!
     signingConfigs {
         release {
-            storeFile file("/var/lib/jenkins/workspace/keystore/JenkinsTest.jks")
-            // 젠킨스가 설치된 우분투에 복사한 키스토어 파일 경로.
+            storeFile file("/var/lib/jenkins/workspace/keystore/jt.jks") // 젠킨스가 설치된 우분투에 복사한 키스토어 파일 경로.
             storePassword "000000" // 키스토어 패스워드
-            keyAlias "JenkinsTest" // 키 이름
+            keyAlias "jt.jks" // 키 이름
             keyPassword "000000" // 키 패스워드
         }
     }
@@ -55,15 +54,13 @@ android {
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt')
-            signingConfig signingConfigs.release // 서명 설정
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release // 서명 설정
+            lintOptions {
+                disable 'MissingTranslation'
+            }
         }
         SNAPSHOT {
             minifyEnabled false
