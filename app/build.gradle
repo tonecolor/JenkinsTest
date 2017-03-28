@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+/*
 
 String APK_NAME = "jenkinsTest" // 기본으로 사용되는 APK 파일명
 
@@ -9,6 +10,7 @@ def getDate() {
     return formattedDate
 }
 
+*/
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -27,7 +29,7 @@ android {
         release {
             storeFile file("var/lib/jenkins/workspace/keystore/jt.keystore") // 젠킨스가 설치된 우분투에 복사한 키스토어 파일 경로.
             storePassword "000000" // 키스토어 패스워드
-            keyAlias "jt.jks" // 키 이름
+            keyAlias "Jenkins" // 키 이름
             keyPassword "000000" // 키 패스워드
         }
     }
@@ -58,9 +60,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release // 서명 설정
-            lintOptions {
+            /*lintOptions {
                 disable 'MissingTranslation'
-            }
+            }*/
         }
         SNAPSHOT {
             minifyEnabled false
