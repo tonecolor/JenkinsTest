@@ -25,7 +25,7 @@ android {
     // 키스토어의 비밀번호가 Git에 공개되기 때문에 권한 확인이 꼭 필요!
     signingConfigs {
         release {
-            storeFile file("/var/lib/jenkins/workspace/keystore/jt.jks") // 젠킨스가 설치된 우분투에 복사한 키스토어 파일 경로.
+            storeFile file("var/lib/jenkins/workspace/keystore/jt.keystore") // 젠킨스가 설치된 우분투에 복사한 키스토어 파일 경로.
             storePassword "000000" // 키스토어 패스워드
             keyAlias "jt.jks" // 키 이름
             keyPassword "000000" // 키 패스워드
