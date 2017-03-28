@@ -29,7 +29,7 @@ android {
         release {
             storeFile file("var/lib/jenkins/workspace/keystore/jt.keystore") // 젠킨스가 설치된 우분투에 복사한 키스토어 파일 경로.
             storePassword "000000" // 키스토어 패스워드
-            keyAlias "Jenkins" // 키 이름
+            keyAlias "jenkinstest" // 키 이름
             keyPassword "000000" // 키 패스워드
         }
     }
