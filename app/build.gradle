@@ -33,7 +33,7 @@ android {
     }
 
     // 빌드 타입에 따라 APK 이름을 바꾸기 위해 추가
-    applicationVariants.all { variant ->
+    /*applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def alignedOutputFile = output.outputFile; // 최종 APK
             def unalignedOutputFile = output.packageApplication.outputFile; // 언얼라인드 APK
@@ -51,7 +51,7 @@ android {
             output.outputFile = new File(alignedOutputFile.parentFile, newName + ".apk");
             output.packageApplication.outputFile = new File(unalignedOutputFile.parentFile, newName + "-unaligned.apk")
         }
-    }
+    }*/
 
     buildTypes {
         release {
