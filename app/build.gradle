@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
 
+String APK_NAME = "jenkinsTest" // 기본으로 사용되는 APK 파일명
+
+// 데이트타임 스트링을 리턴하는 메소드. 20150120_153025999 형식.
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMdd_HHmmssS')
+    return formattedDate
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -11,10 +20,47 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    // APK 서명을 하기위한 설정
+    // 키스토어의 비밀번호가 Git에 공개되기 때문에 권한 확인이 꼭 필요!
+    signingConfigs {
+        release {
+            storeFile file("/var/lib/jenkins/workspace/keystore/jt.jks") // 젠킨스가 설치된 우분투에 복사한 키스토어 파일 경로.
+            storePassword "000000" // 키스토어 패스워드
+            keyAlias "jenkinstest" // 키 이름
+            keyPassword "000000" // 키 패스워드
+        }
+    }
+
+    // 빌드 타입에 따라 APK 이름을 바꾸기 위해 추가
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def alignedOutputFile = output.outputFile; // 최종 APK
+            def unalignedOutputFile = output.packageApplication.outputFile; // 언얼라인드 APK
+
+            // APK_NAME에 버전이름을 붙임
+            def newName = APK_NAME + "-" + defaultConfig.versionName;
+
+            // 빌드 타입이 스냅샷이면 데이트타임도 붙임
+            if (variant.buildType.name.equals("SNAPSHOT"))
+                newName += "-" + getDate();
+
+            // 빌드 타입 이름 추가
+            newName += "-" + variant.buildType.name;
+
+            output.outputFile = new File(alignedOutputFile.parentFile, newName + ".apk");
+            output.packageApplication.outputFile = new File(unalignedOutputFile.parentFile, newName + "-unaligned.apk")
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release // 서명 설정
+            /*lintOptions {
+                disable 'MissingTranslation'
+            }*/
         }
     }
 }
